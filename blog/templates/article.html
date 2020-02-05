@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ article.title }}{% endblock %}
+
+{% block content %}
+                <div class="site-intro-meta" style="width: 50%;align-items: flex-start;margin: 0 auto">
+                    <h1 class="intro-title intro-fade-in">
+                    <font style="vertical-align: inherit;">
+                        <font sytle="vertical-align: inherit;">{{ article.title }}</font>
+                    </font>
+                    </h1>
+{#                    <p class="intro-subtitle">it's better to burn out than to fade away</p>#}
+                    <div class="post-intros post-fade-in">
+                        <div class="post-intro-meta">
+                            <span class="post-intro-calander iconfont-archer"></span>
+                            <span class="post-intro-time">{{ article.date_time }}</span>
+                            <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                                <span class="iconfont-archer">
+                                    <font sytle="vertical-align: inherit;">
+                                        <font sytle="vertical-align: inherit;"></font>
+                                    </font>
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script>
+                var browser = {
+                    versions: function() {
+                        var e = window.navigator.userAgent;
+                        return {
+                            userAgent: e,
+                            trident: -1 < e.indexOf("Trident"),
+                            presto: -1 < e.indexOf("Presto"),
+                            webKit: -1 < e.indexOf("AppleWebKit"),
+                            gecko: -1 < e.indexOf("Gecko") && -1 == e.indexOf("KHTML"),
+                            mobile: !!e.match(/AppleWebKit.*Mobile.*/),
+                            ios: !!e.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/),
+                            android: -1 < e.indexOf("Android") || -1 < e.indexOf("Linux"),
+                            iPhone: -1 < e.indexOf("iPhone") || -1 < e.indexOf("Mac"),
+                            iPad: -1 < e.indexOf("iPad"),
+                            webApp: -1 == e.indexOf("Safari"),
+                            weixin: -1 == e.indexOf("MicroMessenger"),
+                            uc: -1 < e.indexOf("UCBrowser")
+                        }
+                    }()
+                };
+                function fontLoaded() {
+                    if (console.log("font loaded"),
+                    document.getElementsByClassName("site-intro-meta")) {
+                        document.getElementsByClassName("intro-title")[0].classList.add("intro-fade-in"),
+                        document.getElementsByClassName("intro-subtitle")[0].classList.add("intro-fade-in");
+                        var e = document.getElementsByClassName("post-intros")[0];
+                        e && e.classList.add("post-fade-in")
+                    }
+                }
+                function asyncCb() {
+                    browser.versions.uc ? (console.log("UCBrowser"),
+                    fontLoaded()) : WebFont.load({
+                        custom: {
+                            families: ["Oswald-Regular"]
+                        },
+                        loading: function() {},
+                        active: function() {
+                            fontLoaded()
+                        },
+                        inactive: function() {
+                            console.log("inactive: timeout"),
+                            fontLoaded()
+                        },
+                        timeout: 5e3
+                    })
+                }
+                function asyncErr() {
+                    console.warn("script load from CDN failed, will load local script")
+                }
+                function async(e, n, o) {
+                    var t = document
+                      , i = "script"
+                      , a = t.createElement(i)
+                      , s = t.getElementsByTagName(i)[0];
+                    a.src = e,
+                    n && a.addEventListener("load", function(e) {
+                        n(null, e)
+                    }, !1),
+                    o && a.addEventListener("error", function(e) {
+                        o(null, e)
+                    }, !1),
+                    s.parentNode.insertBefore(a, s)
+                }
+                console.log("userAgent:" + browser.versions.userAgent);
+                var asyncLoadWithFallBack = function(e, n, o) {
+                    var t = function() {
+                        o(),
+                        e.shift(),
+                        e.length && async(e[0], n, t)
+                    };
+                    async(e[0], n, t)
+                };
+                asyncLoadWithFallBack(["https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js", "https://cdn.bootcss.com/webfont/1.6.28/webfontloader.js", "/static/lib/webfontloader.min.js"], asyncCb, asyncErr)
+            </script>
+{#            <img class="loading" src="/static/assets/loading.svg" style="display:block;margin:6rem auto 0 auto;width:6rem;height:6rem">#}
+            <div class="container">
+                <main class="main post-page">
+                    <article class="article-entry">
+                        {{ article.content|safe }}
+                    </article>
+                </main>
+            </div>
+{% endblock %}
