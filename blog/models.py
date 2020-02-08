@@ -7,7 +7,7 @@ from mdeditor.fields import MDTextField
 class Tag(models.Model):
     tag_name = models.CharField(u'标签名', max_length=30)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.tag_name
 
 class Article(models.Model):
@@ -23,7 +23,7 @@ class Article(models.Model):
     picture = models.CharField(blank=True, null=True, max_length=200, )  # 标题图片地址
     tag = models.ManyToManyField(Tag)  # 标签
 
-    def __unicode__(self):
+    def __str__(self):
         return self.title
 
     # def sourceUrl(self):
@@ -59,7 +59,7 @@ class Category(models.Model):
         verbose_name = u"文章类型"
         verbose_name_plural = verbose_name
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
